@@ -1,4 +1,4 @@
-import { buildNombreCompleto, contactoToFormData } from "@/lib/contact-helpers";
+import { contactoToFormData } from "@/lib/contact-helpers";
 import type { ApiErrorPayload, Contacto, ContactoFormData } from "@/lib/types";
 
 export class ApiError extends Error {
@@ -44,7 +44,8 @@ async function request<T>(endpoint: string, init?: RequestInit): Promise<T> {
 
 function toBackendPayload(data: ContactoFormData) {
   return {
-    nombre: buildNombreCompleto(data.nombre, data.apellido),
+    nombre: data.nombre.trim(),
+    apellido: data.apellido.trim(),
     telefono: data.telefono.trim(),
     email: data.email.trim().toLowerCase(),
   };

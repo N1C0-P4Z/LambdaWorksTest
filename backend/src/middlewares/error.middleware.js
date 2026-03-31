@@ -7,7 +7,19 @@ function errorHandler(err, req, res, next) {
   if (res.headersSent) return next(err);
 
   if (err && err.code === "P2002") {
-    return res.status(400).json({ error: "email ya existe" });
+    const target = err.meta?.target;
+
+    if (target?.includes("email")) {
+      return res.status(400).json({ error: "Ya existe un contacto con ese email" });
+    }
+    if (target?.includes("telefono")) {
+      return res.status(400).json({ error: "Ya existe un contacto con ese teléfono" });
+    }
+    if (target?.includes("nombre_apellido_unique") || (target?.includes("nombre") && target?.includes("apellido"))) {
+      return res.status(400).json({ error: "Ya existe un contacto con ese nombre y apellido" });
+    }
+
+    return res.status(400).json({ error: "Ya existe un registro con esos datos" });
   }
 
   console.error(err);

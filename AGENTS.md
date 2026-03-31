@@ -312,3 +312,15 @@ Si aparece `Duplicate keys are not allowed`, dejar solo una clave por nombre (ej
 
 En plan free puede dormir por inactividad. Primer request puede tardar mientras despierta.
 No es bug de código.
+
+---
+
+## 8) Diseño UI y Tema Actual
+
+El frontend ha sido personalizado con un tema oscuro tipo "Premium" con acentos dorados:
+- **Fondo Global:** Gris oscuro continuo (`bg-background` mapeado a `#121212`).
+- **Acentos y Bordes:** Dorado metálico (`--border` y `--primary` -> `#d4af37`), reflejándose tanto en rebordes iluminados como en los botones principales ("Nuevo", "Editar").
+- **Tipografía:** Se implementó `Montserrat` estandarizada para todos los nodos inyectando el generador nativo de `next/font/google` al body y limpiando el archivo CSS global de Tailwind.
+- **Botones Destructivos (Peligro):** Eliminar contactos y las cruces ("X") para cerrar modales mantienen un rojo clásico (`bg-destructive` -> `#dc2626`) con fuerte contraste en blanco.
+- **Íconos Clave:** Reescritos con paleta en código duro para destacar independientemente del dorado del tema: Llamada/Teléfono usa Azul Dodger (`#1E90FF`) y Email utiliza un suave Verde Esmeralda (`#2ECC71`).
+- **Avatares:** Llevan el mismo tono unificado en dorado (`#d4af37`) implementando íconos internos SVG (`<User>`) con su correspondiente reborde y sombra difuminada (Shadow drop glow) en la cabecera.

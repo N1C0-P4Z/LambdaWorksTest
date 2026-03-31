@@ -15,8 +15,11 @@ datasource db {
 model Contacto {
   id        Int      @id @default(autoincrement())
   nombre    String
+  apellido  String
   email     String   @unique
-  telefono  String?
+  telefono  String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([nombre, apellido], name: "nombre_apellido_unique")
 }

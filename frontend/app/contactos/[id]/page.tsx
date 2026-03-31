@@ -9,7 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ContactForm } from "@/components/contactos/ContactForm";
 import { DeleteConfirmDialog } from "@/components/contactos/DeleteConfirmDialog";
 import { useContactos } from "@/hooks/useContactos";
-import { getInitials, splitNombreCompleto } from "@/lib/contact-helpers";
 import type { ContactoFormData } from "@/lib/types";
 
 const FORM_ID = "edit-contact-form";
@@ -45,7 +44,12 @@ export default function EditarContactoPage() {
     return `${initialData.nombre} ${initialData.apellido}`.trim();
   }, [initialData]);
 
-  const parsedName = useMemo(() => splitNombreCompleto(fullName), [fullName]);
+  const initials = useMemo(() => {
+    if (!initialData) return "??";
+    const n = initialData.nombre?.[0]?.toUpperCase() || "";
+    const a = initialData.apellido?.[0]?.toUpperCase() || "";
+    return `${n}${a}` || "??";
+  }, [initialData]);
 
   async function handleUpdate(data: ContactoFormData) {
     try {
@@ -89,7 +93,7 @@ export default function EditarContactoPage() {
                 <div className="flex items-center gap-3">
                   <Avatar className="size-12 bg-blue-600">
                     <AvatarFallback className="bg-transparent text-lg font-semibold text-white">
-                      {getInitials(fullName)}
+                      {initials}
                     </AvatarFallback>
                   </Avatar>
                   <p className="text-lg font-semibold text-white">{fullName}</p>
@@ -145,8 +149,8 @@ export default function EditarContactoPage() {
 
         <DeleteConfirmDialog
           open={dialogOpen}
-          contactoNombre={parsedName.nombre || initialData?.nombre || ""}
-          contactoApellido={parsedName.apellido || initialData?.apellido || ""}
+          contactoNombre={initialData?.nombre || ""}
+          contactoApellido={initialData?.apellido || ""}
           onCancel={() => setDialogOpen(false)}
           onConfirm={handleDelete}
           isLoading={mutating}

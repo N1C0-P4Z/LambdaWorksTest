@@ -4,6 +4,7 @@ import { Mail, Phone } from "lucide-react";
 import type { Contacto } from "@/lib/types";
 import {
   getAvatarColor,
+  getFullName,
   getInitials,
   normalizePhone,
 } from "@/lib/contact-helpers";
@@ -20,12 +21,12 @@ export function ContactCard({ contacto, index }: ContactCardProps) {
         <div className="flex items-start gap-4">
           <Avatar className="size-14" style={{ backgroundColor: getAvatarColor(index) }}>
             <AvatarFallback className="bg-transparent text-lg font-semibold text-white">
-              {getInitials(contacto.nombre)}
+              {getInitials(contacto)}
             </AvatarFallback>
           </Avatar>
 
           <div className="min-w-0 flex-1 space-y-1">
-            <h3 className="truncate text-xl font-semibold text-foreground">{contacto.nombre}</h3>
+            <h3 className="truncate text-xl font-semibold text-foreground">{getFullName(contacto)}</h3>
 
 
             <div className="mt-3 grid gap-2 sm:grid-cols-2">

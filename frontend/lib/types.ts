@@ -1,8 +1,9 @@
 export type Contacto = {
   id: number;
   nombre: string;
+  apellido: string;
   email: string;
-  telefono?: string | null;
+  telefono: string;
   createdAt?: string;
   updatedAt?: string;
 };

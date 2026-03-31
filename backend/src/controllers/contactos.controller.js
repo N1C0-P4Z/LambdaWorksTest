@@ -1,5 +1,5 @@
 const prisma = require("../lib/prisma");
-const { normalizeString, isValidEmail } = require("../utils/validators");
+const { normalizeString, isValidEmail, isValidPhoneAR } = require("../utils/validators");
 
 function parseId(raw) {
   const id = Number(raw);
@@ -9,14 +9,19 @@ function parseId(raw) {
 exports.crearContacto = async (req, res, next) => {
   try {
     const nombre = normalizeString(req.body.nombre);
+    const apellido = normalizeString(req.body.apellido);
     const email = normalizeString(req.body.email).toLowerCase();
-    const telefono = req.body.telefono ? normalizeString(req.body.telefono) : null;
+    const telefono = normalizeString(req.body.telefono);
 
     if (!nombre) return res.status(400).json({ error: "nombre es requerido" });
+    if (!apellido) return res.status(400).json({ error: "apellido es requerido" });
     if (!email || !isValidEmail(email)) return res.status(400).json({ error: "email inválido" });
+    if (!telefono || !isValidPhoneAR(telefono)) {
+      return res.status(400).json({ error: "teléfono inválido, debe comenzar con +54" });
+    }
 
     const creado = await prisma.contacto.create({
-      data: { nombre, email, telefono },
+      data: { nombre, apellido, email, telefono },
     });
 
     return res.status(201).json(creado);
@@ -27,8 +32,16 @@ exports.crearContacto = async (req, res, next) => {
 
 exports.listarContactos = async (req, res, next) => {
   try {
-    const nombre = normalizeString(req.query.nombre);
-    const where = nombre ? { nombre: { contains: nombre, mode: "insensitive" } } : {};
+    const busqueda = normalizeString(req.query.nombre || req.query.search);
+    const where = busqueda
+      ? {
+          OR: [
+            { nombre: { contains: busqueda, mode: "insensitive" } },
+            { apellido: { contains: busqueda, mode: "insensitive" } },
+            { email: { contains: busqueda, mode: "insensitive" } },
+          ],
+        }
+      : {};
 
     const contactos = await prisma.contacto.findMany({
       where,
@@ -68,6 +81,12 @@ exports.actualizarContacto = async (req, res, next) => {
       data.nombre = nombre;
     }
 
+    if (req.body.apellido !== undefined) {
+      const apellido = normalizeString(req.body.apellido);
+      if (!apellido) return res.status(400).json({ error: "apellido no puede estar vacío" });
+      data.apellido = apellido;
+    }
+
     if (req.body.email !== undefined) {
       const email = normalizeString(req.body.email).toLowerCase();
       if (!isValidEmail(email)) return res.status(400).json({ error: "email inválido" });
@@ -75,7 +94,11 @@ exports.actualizarContacto = async (req, res, next) => {
     }
 
     if (req.body.telefono !== undefined) {
-      data.telefono = req.body.telefono ? normalizeString(req.body.telefono) : null;
+      const telefono = normalizeString(req.body.telefono);
+      if (!isValidPhoneAR(telefono)) {
+        return res.status(400).json({ error: "teléfono inválido, debe comenzar con +54" });
+      }
+      data.telefono = telefono;
     }
 
     if (Object.keys(data).length === 0) {

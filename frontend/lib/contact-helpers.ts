@@ -2,12 +2,20 @@ import type { Contacto, ContactoFormData } from "@/lib/types";
 
 const AVATAR_COLORS = ["#D4AF37"];
 
-export function getInitials(nombre: string) {
-  const trimmed = nombre.trim();
-  if (!trimmed) return "??";
+export function getInitials(contacto: Contacto) {
+  const nombre = contacto.nombre?.trim() || "";
+  const apellido = contacto.apellido?.trim() || "";
 
-  const parts = trimmed.split(/\s+/).slice(0, 2);
-  return parts.map((part) => part[0]?.toUpperCase() ?? "").join("");
+  if (!nombre && !apellido) return "??";
+
+  const inicialNombre = nombre[0]?.toUpperCase() || "";
+  const inicialApellido = apellido[0]?.toUpperCase() || "";
+
+  return `${inicialNombre}${inicialApellido}` || "??";
+}
+
+export function getFullName(contacto: Contacto) {
+  return `${contacto.nombre} ${contacto.apellido}`.trim();
 }
 
 export function getAvatarColor(index: number) {
@@ -18,14 +26,13 @@ export function normalizePhone(telefono?: string | null) {
   return telefono?.trim() || "Sin teléfono";
 }
 
-
-
 export function matchContacto(contacto: Contacto, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return true;
 
   const haystack = [
     contacto.nombre,
+    contacto.apellido,
     contacto.email,
     contacto.telefono ?? "",
   ]
@@ -35,33 +42,11 @@ export function matchContacto(contacto: Contacto, query: string) {
   return haystack.includes(normalizedQuery);
 }
 
-export function splitNombreCompleto(nombreCompleto: string) {
-  const parts = nombreCompleto.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) {
-    return { nombre: "", apellido: "" };
-  }
-
-  if (parts.length === 1) {
-    return { nombre: parts[0], apellido: "" };
-  }
-
-  return {
-    nombre: parts[0],
-    apellido: parts.slice(1).join(" "),
-  };
-}
-
-export function buildNombreCompleto(nombre: string, apellido: string) {
-  return `${nombre.trim()} ${apellido.trim()}`.trim();
-}
-
 export function contactoToFormData(contacto: Contacto): ContactoFormData {
-  const { nombre, apellido } = splitNombreCompleto(contacto.nombre);
-
   return {
-    nombre,
-    apellido,
-    telefono: contacto.telefono?.trim() || "",
-    email: contacto.email,
+    nombre: contacto.nombre || "",
+    apellido: contacto.apellido || "",
+    telefono: contacto.telefono || "",
+    email: contacto.email || "",
   };
 }

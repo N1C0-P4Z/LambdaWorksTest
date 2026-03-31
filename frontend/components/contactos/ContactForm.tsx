@@ -19,7 +19,7 @@ type ContactFormProps = {
   showActions?: boolean;
 };
 
-const PHONE_REGEX = /^\+?[0-9\s()-]{7,20}$/;
+const PHONE_REGEX = /^\+54\s?[0-9\s()-]{8,20}$/;
 
 function validateField(field: keyof ContactoFormData, value: string): string {
   const trimmed = value.trim();
@@ -33,7 +33,7 @@ function validateField(field: keyof ContactoFormData, value: string): string {
   }
 
   if (field === "telefono" && !PHONE_REGEX.test(trimmed)) {
-    return "Formato inválido. Ej: +34 600 000 000";
+    return "Debe comenzar con +54. Ej: +54 9 341 1234567";
   }
 
   if (
@@ -160,7 +160,7 @@ export function ContactForm({
                 value={formData.telefono}
                 onChange={(e) => updateField("telefono", e.target.value)}
                 disabled={isLoading}
-                placeholder="+34 600 000 000"
+                placeholder="+54 9 341 1234567"
                 className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
@@ -189,23 +189,25 @@ export function ContactForm({
       </section>
 
       {/* Botones en mobile (sin dialog) */}
-      <div className="grid gap-3 md:hidden">
-        <Button
-          type="button"
-          onClick={onCancel}
-          disabled={isLoading}
-          className="h-11 w-full bg-muted text-foreground hover:bg-muted/90"
-        >
-          Cancelar
-        </Button>
-        <Button
-          type="submit"
-          disabled={isLoading || hasErrors}
-          className="h-11 w-full border border-primary bg-card text-primary hover:bg-muted"
-        >
-          {isLoading ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
-        </Button>
-      </div>
+      {!showActions && (
+        <div className="grid gap-3 md:hidden">
+          <Button
+            type="button"
+            onClick={onCancel}
+            disabled={isLoading}
+            className="h-11 w-full bg-muted text-foreground hover:bg-muted/90"
+          >
+            Cancelar
+          </Button>
+          <Button
+            type="submit"
+            disabled={isLoading || hasErrors}
+            className="h-11 w-full border border-primary bg-card text-primary hover:bg-muted"
+          >
+            {isLoading ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
+          </Button>
+        </div>
+      )}
 
       {/* Botones inline para uso dentro de Dialog */}
       {showActions && (

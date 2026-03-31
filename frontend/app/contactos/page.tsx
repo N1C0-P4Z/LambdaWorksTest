@@ -11,7 +11,7 @@ import { DeleteConfirmDialog } from "@/components/contactos/DeleteConfirmDialog"
 import { SearchBar } from "@/components/contactos/SearchBar";
 import { useContactos } from "@/hooks/useContactos";
 import { useSearch } from "@/hooks/useSearch";
-import { matchContacto, splitNombreCompleto } from "@/lib/contact-helpers";
+import { matchContacto } from "@/lib/contact-helpers";
 
 // Estado del diálogo de crear/editar
 type DialogState = {
@@ -24,7 +24,8 @@ type DialogState = {
 type DeleteState = {
   open: boolean;
   id?: number;
-  nombreCompleto?: string;
+  nombre?: string;
+  apellido?: string;
 };
 
 export default function ContactosPage() {
@@ -65,8 +66,8 @@ export default function ContactosPage() {
   }
 
   // --- Handlers de eliminar ---
-  function openDelete(id: number, nombreCompleto: string) {
-    setDeleteState({ open: true, id, nombreCompleto });
+  function openDelete(id: number, nombre: string, apellido: string) {
+    setDeleteState({ open: true, id, nombre, apellido });
   }
 
   function closeDelete() {
@@ -85,12 +86,6 @@ export default function ContactosPage() {
       toast.error(msg);
     }
   }
-
-  // Separa nombre y apellido para el diálogo de confirmación
-  const parsedDeleteName = useMemo(() => {
-    if (!deleteState.nombreCompleto) return { nombre: "", apellido: "" };
-    return splitNombreCompleto(deleteState.nombreCompleto);
-  }, [deleteState.nombreCompleto]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -161,8 +156,8 @@ export default function ContactosPage() {
       {/* ── Modal confirmar eliminación ───────────────────────── */}
       <DeleteConfirmDialog
         open={deleteState.open}
-        contactoNombre={parsedDeleteName.nombre}
-        contactoApellido={parsedDeleteName.apellido}
+        contactoNombre={deleteState.nombre || ""}
+        contactoApellido={deleteState.apellido || ""}
         onConfirm={handleDelete}
         onCancel={closeDelete}
         isLoading={mutating}

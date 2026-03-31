@@ -13,16 +13,50 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { Contacto } from "@/lib/types";
 import {
   getAvatarColor,
+  getFullName,
   getInitials,
   normalizePhone,
 } from "@/lib/contact-helpers";
+
+// Robot triste con ojos en X para estado vacío
+function SadRobot({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Antena */}
+      <circle cx="32" cy="8" r="4" fill="currentColor" opacity="0.6" />
+      <rect x="30" y="10" width="4" height="8" fill="currentColor" opacity="0.6" />
+
+      {/* Cabeza */}
+      <rect x="12" y="18" width="40" height="32" rx="4" fill="currentColor" opacity="0.15" stroke="currentColor" strokeWidth="2" />
+
+      {/* Ojo izquierdo (X) */}
+      <line x1="20" y1="28" x2="28" y2="36" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="28" y1="28" x2="20" y2="36" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+
+      {/* Ojo derecho (X) */}
+      <line x1="36" y1="28" x2="44" y2="36" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="44" y1="28" x2="36" y2="36" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+
+      {/* Boca triste */}
+      <path d="M24 44 Q32 40 40 44" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+
+      {/* Cuerpo */}
+      <rect x="18" y="52" width="28" height="10" rx="2" fill="currentColor" opacity="0.15" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  );
+}
 
 type ContactTableProps = {
   contactos: Contacto[];
   loading: boolean;
   error: string | null;
   onEdit: (id: number) => void;
-  onDelete: (id: number, nombre: string) => void;
+  onDelete: (id: number, nombre: string, apellido: string) => void;
 };
 
 function TableSkeleton() {
@@ -55,8 +89,9 @@ export function ContactTable({ contactos, loading, error, onEdit, onDelete }: Co
 
   if (contactos.length === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-8 text-center text-foreground/70">
-        Sin resultados
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-8 text-center">
+        <SadRobot className="mb-3 h-20 w-20 text-foreground/50" />
+        <span className="text-foreground/70">Sin resultados</span>
       </div>
     );
   }
@@ -71,14 +106,14 @@ export function ContactTable({ contactos, loading, error, onEdit, onDelete }: Co
             <div className="flex shrink-0 items-center justify-center">
               <Avatar className="size-11" style={{ backgroundColor: getAvatarColor(index) }}>
                 <AvatarFallback className="bg-transparent font-semibold text-white">
-                  {getInitials(contacto.nombre)}
+                  {getInitials(contacto)}
                 </AvatarFallback>
               </Avatar>
             </div>
 
             {/* Info Container */}
             <div className="flex flex-1 flex-col gap-2 overflow-hidden">
-              <p className="truncate text-base font-semibold text-foreground">{contacto.nombre}</p>
+              <p className="truncate text-base font-semibold text-foreground">{getFullName(contacto)}</p>
 
               <div className="flex items-center gap-2 text-sm text-foreground">
                 <Phone className="size-4 shrink-0 text-[#1E90FF]" />
@@ -102,7 +137,7 @@ export function ContactTable({ contactos, loading, error, onEdit, onDelete }: Co
               </Button>
               <Button
                 type="button"
-                onClick={() => onDelete(contacto.id, contacto.nombre)}
+                onClick={() => onDelete(contacto.id, contacto.nombre, contacto.apellido)}
                 className="h-8 bg-destructive px-3 py-0 text-xs text-white hover:bg-destructive/90"
               >
                 Eliminar
@@ -135,12 +170,12 @@ export function ContactTable({ contactos, loading, error, onEdit, onDelete }: Co
                   <div className="flex min-w-[260px] items-start gap-3">
                     <Avatar className="size-11" style={{ backgroundColor: getAvatarColor(index) }}>
                       <AvatarFallback className="bg-transparent font-semibold text-white">
-                        {getInitials(contacto.nombre)}
+                        {getInitials(contacto)}
                       </AvatarFallback>
                     </Avatar>
 
                     <div className="space-y-0.5">
-                      <p className="text-base font-semibold text-foreground">{contacto.nombre}</p>
+                      <p className="text-base font-semibold text-foreground">{getFullName(contacto)}</p>
                     </div>
                   </div>
                 </TableCell>
@@ -175,7 +210,7 @@ export function ContactTable({ contactos, loading, error, onEdit, onDelete }: Co
                       type="button"
                       onClick={(event) => {
                         event.stopPropagation();
-                        onDelete(contacto.id, contacto.nombre);
+                        onDelete(contacto.id, contacto.nombre, contacto.apellido);
                       }}
                       className="h-9 bg-destructive px-3 text-white hover:bg-destructive/90"
                     >
