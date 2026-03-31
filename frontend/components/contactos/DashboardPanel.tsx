@@ -13,13 +13,13 @@ const actions: ActionCard[] = [
     title: "👥 Todos los Contactos",
     description: "Ver y gestionar todos tus contactos",
     href: "/contactos",
-    background: "#0066CC",
+    background: "#2d2d2d",
   },
   {
     title: "➕ Crear Nuevo",
     description: "Agregar un nuevo contacto",
     href: "/contactos/nuevo",
-    background: "#1E90FF",
+    background: "#d4af37",
   },
 ];
 

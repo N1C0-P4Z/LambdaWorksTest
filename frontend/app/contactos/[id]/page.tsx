@@ -73,9 +73,9 @@ export default function EditarContactoPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F5F5] px-4 py-8 text-[#333333] sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-muted px-4 py-8 text-foreground sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-6">
-        <section className="rounded-2xl bg-[#0066CC] p-6 text-white shadow-md">
+        <section className="rounded-2xl bg-primary p-6 text-white shadow-md">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="space-y-3">
               <div>
@@ -84,10 +84,10 @@ export default function EditarContactoPage() {
               </div>
 
               {singleLoading || !initialData ? (
-                <Skeleton className="h-12 w-52 bg-white/30" />
+                <Skeleton className="h-12 w-52 bg-card/30" />
               ) : (
                 <div className="flex items-center gap-3">
-                  <Avatar className="size-12 bg-[#1E90FF]">
+                  <Avatar className="size-12 bg-blue-600">
                     <AvatarFallback className="bg-transparent text-lg font-semibold text-white">
                       {getInitials(fullName)}
                     </AvatarFallback>
@@ -101,7 +101,7 @@ export default function EditarContactoPage() {
               <Button
                 type="button"
                 onClick={() => router.push("/contactos")}
-                className="h-10 bg-[#1E90FF] text-white hover:bg-[#1E90FF]/90"
+                className="h-10 bg-blue-600 text-white hover:bg-blue-600/90"
               >
                 Cancelar
               </Button>
@@ -109,7 +109,7 @@ export default function EditarContactoPage() {
                 type="submit"
                 form={FORM_ID}
                 disabled={mutating || singleLoading}
-                className="h-10 border border-[#0066CC] bg-white text-[#0066CC] hover:bg-[#F5F5F5]"
+                className="h-10 border border-primary bg-card text-primary hover:bg-muted"
               >
                 {mutating ? "Guardando..." : "Guardar"}
               </Button>
@@ -117,7 +117,7 @@ export default function EditarContactoPage() {
                 type="button"
                 onClick={() => setDialogOpen(true)}
                 disabled={mutating || singleLoading || !initialData}
-                className="h-10 bg-[#FF3333] text-white hover:bg-[#FF3333]/90"
+                className="h-10 bg-destructive text-white hover:bg-destructive/90"
               >
                 Eliminar
               </Button>
@@ -126,11 +126,11 @@ export default function EditarContactoPage() {
         </section>
 
         {singleLoading || !initialData ? (
-          <section className="space-y-3 rounded-2xl border border-[#E0E0E0] bg-white p-6 shadow-sm">
-            <Skeleton className="h-12 w-full bg-[#F5F5F5]" />
-            <Skeleton className="h-12 w-full bg-[#F5F5F5]" />
-            <Skeleton className="h-12 w-full bg-[#F5F5F5]" />
-            <Skeleton className="h-12 w-full bg-[#F5F5F5]" />
+          <section className="space-y-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <Skeleton className="h-12 w-full bg-muted" />
+            <Skeleton className="h-12 w-full bg-muted" />
+            <Skeleton className="h-12 w-full bg-muted" />
+            <Skeleton className="h-12 w-full bg-muted" />
           </section>
         ) : (
           <ContactForm

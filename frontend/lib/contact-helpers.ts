@@ -1,6 +1,6 @@
 import type { Contacto, ContactoFormData } from "@/lib/types";
 
-const AVATAR_COLORS = ["#0066CC", "#008B8B", "#1E90FF", "#0077BE"];
+const AVATAR_COLORS = ["#D4AF37"];
 
 export function getInitials(nombre: string) {
   const trimmed = nombre.trim();

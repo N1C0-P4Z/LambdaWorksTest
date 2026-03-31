@@ -15,7 +15,7 @@ type ContactCardProps = {
 
 export function ContactCard({ contacto, index }: ContactCardProps) {
   return (
-    <Card className="rounded-2xl border border-[#E0E0E0] bg-white py-0 shadow-sm">
+    <Card className="rounded-2xl border border-border bg-card py-0 shadow-sm">
       <CardContent className="p-5">
         <div className="flex items-start gap-4">
           <Avatar className="size-14" style={{ backgroundColor: getAvatarColor(index) }}>
@@ -25,16 +25,16 @@ export function ContactCard({ contacto, index }: ContactCardProps) {
           </Avatar>
 
           <div className="min-w-0 flex-1 space-y-1">
-            <h3 className="truncate text-xl font-semibold text-[#333333]">{contacto.nombre}</h3>
+            <h3 className="truncate text-xl font-semibold text-foreground">{contacto.nombre}</h3>
 
 
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              <p className="flex items-center gap-2 text-sm text-[#333333]">
-                <Phone className="size-4 text-[#0066CC]" />
+              <p className="flex items-center gap-2 text-sm text-foreground">
+                <Phone className="size-4 text-primary" />
                 {normalizePhone(contacto.telefono)}
               </p>
-              <p className="flex items-center gap-2 break-all text-sm text-[#333333]">
-                <Mail className="size-4 text-[#00A9A9]" />
+              <p className="flex items-center gap-2 break-all text-sm text-foreground">
+                <Mail className="size-4 text-teal-500" />
                 {contacto.email}
               </p>
             </div>

@@ -59,8 +59,8 @@ export function ContactDialog({
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
-      <DialogContent className="rounded-2xl border border-[#E0E0E0] bg-white p-0 sm:max-w-2xl">
-        <DialogHeader className="rounded-t-2xl bg-[#0066CC] px-6 py-5">
+      <DialogContent className="rounded-2xl border border-border bg-card p-0 sm:max-w-2xl">
+        <DialogHeader className="rounded-t-2xl bg-primary px-6 py-5">
           <DialogTitle className="text-xl font-bold text-white">
             {mode === "create" ? "Nuevo Contacto" : "Editar Contacto"}
           </DialogTitle>
@@ -74,10 +74,10 @@ export function ContactDialog({
         <div className="px-6 py-5">
           {isLoadingData ? (
             <div className="space-y-4">
-              <Skeleton className="h-11 w-full bg-[#F5F5F5]" />
-              <Skeleton className="h-11 w-full bg-[#F5F5F5]" />
-              <Skeleton className="h-11 w-full bg-[#F5F5F5]" />
-              <Skeleton className="h-11 w-full bg-[#F5F5F5]" />
+              <Skeleton className="h-11 w-full bg-muted" />
+              <Skeleton className="h-11 w-full bg-muted" />
+              <Skeleton className="h-11 w-full bg-muted" />
+              <Skeleton className="h-11 w-full bg-muted" />
             </div>
           ) : (
             <ContactForm

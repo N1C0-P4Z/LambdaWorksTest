@@ -104,75 +104,75 @@ export function ContactForm({
 
   return (
     <form id={formId} onSubmit={handleSubmit} className="space-y-6">
-      <section className={showActions ? "" : "rounded-2xl border border-[#E0E0E0] bg-white p-6 shadow-sm"}>
+      <section className={showActions ? "" : "rounded-2xl border border-border bg-card p-6 shadow-sm"}>
         {!showActions && (
-          <div className="mb-5 flex items-center gap-2 text-[#333333]">
-            <Phone className="size-5 text-[#0066CC]" />
+          <div className="mb-5 flex items-center gap-2 text-foreground">
+            <Phone className="size-5 text-[#1E90FF]" />
             <h2 className="text-2xl font-semibold">Información Personal</h2>
           </div>
         )}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="nombre" className="mb-1 block text-sm font-medium text-[#333333]">
+            <label htmlFor="nombre" className="mb-1 block text-sm font-medium text-foreground">
               Nombre
             </label>
             <div className="relative">
-              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground/55" />
               <Input
                 id="nombre"
                 value={formData.nombre}
                 onChange={(e) => updateField("nombre", e.target.value)}
                 disabled={isLoading}
                 placeholder="Juan"
-                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+                className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
             {errors.nombre ? <p className="mt-1 text-xs text-[#FF3333]">{errors.nombre}</p> : null}
           </div>
 
           <div>
-            <label htmlFor="apellido" className="mb-1 block text-sm font-medium text-[#333333]">
+            <label htmlFor="apellido" className="mb-1 block text-sm font-medium text-foreground">
               Apellido
             </label>
             <div className="relative">
-              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground/55" />
               <Input
                 id="apellido"
                 value={formData.apellido}
                 onChange={(e) => updateField("apellido", e.target.value)}
                 disabled={isLoading}
                 placeholder="Pérez"
-                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+                className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
             {errors.apellido ? <p className="mt-1 text-xs text-[#FF3333]">{errors.apellido}</p> : null}
           </div>
 
           <div>
-            <label htmlFor="telefono" className="mb-1 block text-sm font-medium text-[#333333]">
+            <label htmlFor="telefono" className="mb-1 block text-sm font-medium text-foreground">
               Teléfono
             </label>
             <div className="relative">
-              <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground/55" />
               <Input
                 id="telefono"
                 value={formData.telefono}
                 onChange={(e) => updateField("telefono", e.target.value)}
                 disabled={isLoading}
                 placeholder="+34 600 000 000"
-                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+                className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
             {errors.telefono ? <p className="mt-1 text-xs text-[#FF3333]">{errors.telefono}</p> : null}
           </div>
 
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-[#333333]">
+            <label htmlFor="email" className="mb-1 block text-sm font-medium text-foreground">
               Email
             </label>
             <div className="relative">
-              <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-foreground/55" />
               <Input
                 id="email"
                 type="email"
@@ -180,7 +180,7 @@ export function ContactForm({
                 onChange={(e) => updateField("email", e.target.value)}
                 disabled={isLoading}
                 placeholder="juan@email.com"
-                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+                className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
             {errors.email ? <p className="mt-1 text-xs text-[#FF3333]">{errors.email}</p> : null}
@@ -194,14 +194,14 @@ export function ContactForm({
           type="button"
           onClick={onCancel}
           disabled={isLoading}
-          className="h-11 w-full bg-[#1E90FF] text-white hover:bg-[#1E90FF]/90"
+          className="h-11 w-full bg-muted text-foreground hover:bg-muted/90"
         >
           Cancelar
         </Button>
         <Button
           type="submit"
           disabled={isLoading || hasErrors}
-          className="h-11 w-full border border-[#0066CC] bg-white text-[#0066CC] hover:bg-[#F5F5F5]"
+          className="h-11 w-full border border-primary bg-card text-primary hover:bg-muted"
         >
           {isLoading ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
         </Button>
@@ -214,14 +214,14 @@ export function ContactForm({
             type="button"
             onClick={onCancel}
             disabled={isLoading}
-            className="h-10 bg-[#F5F5F5] text-[#333333] hover:bg-[#EDEDED]"
+            className="h-10 bg-muted text-foreground hover:bg-accent"
           >
             Cancelar
           </Button>
           <Button
             type="submit"
             disabled={isLoading || hasErrors}
-            className="h-10 bg-[#0066CC] text-white hover:bg-[#0066CC]/90"
+            className="h-10 bg-primary text-white hover:bg-primary/90"
           >
             {isLoading ? "Guardando..." : isEditing ? "Guardar cambios" : "Crear contacto"}
           </Button>

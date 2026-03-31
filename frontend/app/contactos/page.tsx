@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Plus } from "lucide-react";
+import { Plus, User } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ContactTable } from "@/components/contactos/ContactTable";
 import { ContactDialog } from "@/components/contactos/ContactDialog";
@@ -92,18 +93,26 @@ export default function ContactosPage() {
   }, [deleteState.nombreCompleto]);
 
   return (
-    <main className="min-h-screen bg-[#F5F5F5]">
+    <main className="min-h-screen bg-background">
       {/* ── Header ────────────────────────────────────────────── */}
-      <section className="bg-[#0066CC] px-4 py-8 text-white sm:px-6 lg:px-8">
+      <section className="bg-background px-4 py-8 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl space-y-5">
           {/* Título */}
-          <div>
-            <h1 className="text-3xl font-bold">Contactos</h1>
-            <p className="mt-1 text-base text-white/80">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-14 w-14 border-2 border-[#d4af37]">
+              <AvatarImage src="" alt="Avatar" />
+              <AvatarFallback className="bg-muted text-[#d4af37]">
+                <User className="h-7 w-7" />
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h1 className="text-3xl font-bold">Contactos</h1>
+              <p className="mt-1 text-base text-white/80">
               {loading
                 ? "Cargando..."
                 : `${contactos.length} contacto${contactos.length !== 1 ? "s" : ""} en total`}
-            </p>
+              </p>
+            </div>
           </div>
 
           {/* Buscador + botón Nuevo */}
@@ -118,9 +127,9 @@ export default function ContactosPage() {
             <Button
               type="button"
               onClick={openCreate}
-              className="h-11 shrink-0 bg-white px-5 font-semibold text-[#0066CC] hover:bg-[#F5F5F5] sm:w-auto"
+              className="h-11 shrink-0 bg-[#d4af37] px-5 font-semibold text-black hover:bg-[#b5952f] sm:w-auto"
             >
-              <Plus className="mr-2 size-4" />
+              <Plus className="mr-2 size-5" />
               Nuevo
             </Button>
           </div>
@@ -128,7 +137,7 @@ export default function ContactosPage() {
       </section>
 
       {/* ── Tabla de contactos ────────────────────────────────── */}
-      <section className="px-4 py-8 sm:px-6 lg:px-8">
+      <section className="px-4 pb-8 pt-0 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl overflow-x-auto">
           <ContactTable
             contactos={contactosFiltrados}

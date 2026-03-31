@@ -29,7 +29,7 @@ export function AppSidebar() {
       {/* Logo + nombre — como el Figma */}
       <SidebarHeader className="px-4 py-5">
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-full bg-white/20">
+          <div className="flex size-10 items-center justify-center rounded-full bg-card/20">
             <Phone className="size-5 text-white" />
           </div>
           <div>

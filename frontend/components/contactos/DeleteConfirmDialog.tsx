@@ -30,12 +30,12 @@ export function DeleteConfirmDialog({
 }: DeleteConfirmDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={(nextOpen) => !nextOpen && onCancel()}>
-      <AlertDialogContent className="rounded-2xl border border-[#E0E0E0] bg-white">
+      <AlertDialogContent className="rounded-2xl border border-border bg-card">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-xl font-bold text-[#333333]">
+          <AlertDialogTitle className="text-xl font-bold text-foreground">
             ¿Eliminar contacto?
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-sm text-[#333333]/85">
+          <AlertDialogDescription className="text-sm text-foreground/85">
             ¿Estás seguro de que quieres eliminar a {contactoNombre} {contactoApellido}? Esta acción
             no se puede deshacer.
           </AlertDialogDescription>
@@ -44,7 +44,7 @@ export function DeleteConfirmDialog({
         <AlertDialogFooter className="bg-transparent">
           <AlertDialogCancel
             disabled={isLoading}
-            className="h-10 border-[#E0E0E0] bg-[#F5F5F5] text-[#333333] hover:bg-[#EDEDED]"
+            className="h-10 border-border bg-muted text-foreground hover:bg-accent"
           >
             Cancelar
           </AlertDialogCancel>
@@ -54,7 +54,8 @@ export function DeleteConfirmDialog({
               void onConfirm();
             }}
             disabled={isLoading}
-            className="h-10 bg-[#FF3333] text-white hover:bg-[#FF3333]/90"
+            variant="destructive"
+            className="h-10"
           >
             {isLoading ? "Eliminando..." : "Eliminar"}
           </AlertDialogAction>
