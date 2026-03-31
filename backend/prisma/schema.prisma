@@ -14,10 +14,10 @@ datasource db {
 
 model Contacto {
   id        Int      @id @default(autoincrement())
-  nombre    String
-  apellido  String
-  email     String   @unique
-  telefono  String   @unique
+  nombre    String   @db.VarChar(50)
+  apellido  String   @db.VarChar(50)
+  email     String   @unique @db.VarChar(50)
+  telefono  String   @unique @db.VarChar(50)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

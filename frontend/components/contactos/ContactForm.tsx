@@ -28,6 +28,10 @@ function validateField(field: keyof ContactoFormData, value: string): string {
     return "Este campo es requerido";
   }
 
+  if (trimmed.length > 50) {
+    return "No puede exceder 50 caracteres";
+  }
+
   if ((field === "nombre" || field === "apellido") && trimmed.length < 2) {
     return "Debe tener al menos 2 caracteres";
   }
@@ -125,6 +129,7 @@ export function ContactForm({
                 onChange={(e) => updateField("nombre", e.target.value)}
                 disabled={isLoading}
                 placeholder="Juan"
+                maxLength={50}
                 className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
@@ -143,6 +148,7 @@ export function ContactForm({
                 onChange={(e) => updateField("apellido", e.target.value)}
                 disabled={isLoading}
                 placeholder="Pérez"
+                maxLength={50}
                 className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
@@ -161,6 +167,7 @@ export function ContactForm({
                 onChange={(e) => updateField("telefono", e.target.value)}
                 disabled={isLoading}
                 placeholder="+54 9 341 1234567"
+                maxLength={50}
                 className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>
@@ -180,6 +187,7 @@ export function ContactForm({
                 onChange={(e) => updateField("email", e.target.value)}
                 disabled={isLoading}
                 placeholder="juan@email.com"
+                maxLength={50}
                 className="h-11 border-border bg-muted pl-9 text-foreground"
               />
             </div>

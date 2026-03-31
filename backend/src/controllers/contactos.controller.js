@@ -14,11 +14,15 @@ exports.crearContacto = async (req, res, next) => {
     const telefono = normalizeString(req.body.telefono);
 
     if (!nombre) return res.status(400).json({ error: "nombre es requerido" });
+    if (nombre.length > 50) return res.status(400).json({ error: "nombre no puede exceder 50 caracteres" });
     if (!apellido) return res.status(400).json({ error: "apellido es requerido" });
+    if (apellido.length > 50) return res.status(400).json({ error: "apellido no puede exceder 50 caracteres" });
     if (!email || !isValidEmail(email)) return res.status(400).json({ error: "email inválido" });
+    if (email.length > 50) return res.status(400).json({ error: "email no puede exceder 50 caracteres" });
     if (!telefono || !isValidPhoneAR(telefono)) {
       return res.status(400).json({ error: "teléfono inválido, debe comenzar con +54" });
     }
+    if (telefono.length > 50) return res.status(400).json({ error: "teléfono no puede exceder 50 caracteres" });
 
     const creado = await prisma.contacto.create({
       data: { nombre, apellido, email, telefono },
@@ -78,18 +82,21 @@ exports.actualizarContacto = async (req, res, next) => {
     if (req.body.nombre !== undefined) {
       const nombre = normalizeString(req.body.nombre);
       if (!nombre) return res.status(400).json({ error: "nombre no puede estar vacío" });
+      if (nombre.length > 50) return res.status(400).json({ error: "nombre no puede exceder 50 caracteres" });
       data.nombre = nombre;
     }
 
     if (req.body.apellido !== undefined) {
       const apellido = normalizeString(req.body.apellido);
       if (!apellido) return res.status(400).json({ error: "apellido no puede estar vacío" });
+      if (apellido.length > 50) return res.status(400).json({ error: "apellido no puede exceder 50 caracteres" });
       data.apellido = apellido;
     }
 
     if (req.body.email !== undefined) {
       const email = normalizeString(req.body.email).toLowerCase();
       if (!isValidEmail(email)) return res.status(400).json({ error: "email inválido" });
+      if (email.length > 50) return res.status(400).json({ error: "email no puede exceder 50 caracteres" });
       data.email = email;
     }
 
@@ -98,6 +105,7 @@ exports.actualizarContacto = async (req, res, next) => {
       if (!isValidPhoneAR(telefono)) {
         return res.status(400).json({ error: "teléfono inválido, debe comenzar con +54" });
       }
+      if (telefono.length > 50) return res.status(400).json({ error: "teléfono no puede exceder 50 caracteres" });
       data.telefono = telefono;
     }
 
