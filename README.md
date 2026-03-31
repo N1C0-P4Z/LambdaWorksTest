@@ -66,7 +66,7 @@ npm install
 Opcional pero recomendado: crear `frontend/.env.local` para fijar la URL del backend:
 
 ```env
-BACKEND_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_BACKEND_API_URL=http://localhost:3000/api
 ```
 
 Levantar frontend en desarrollo:
