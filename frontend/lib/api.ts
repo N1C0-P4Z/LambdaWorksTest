@@ -1,4 +1,5 @@
-import type { ApiErrorPayload, Contacto } from "@/lib/types";
+import { buildNombreCompleto, contactoToFormData } from "@/lib/contact-helpers";
+import type { ApiErrorPayload, Contacto, ContactoFormData } from "@/lib/types";
 
 export class ApiError extends Error {
   status: number;
@@ -18,13 +19,35 @@ async function handleResponse<T>(response: Response): Promise<T> {
       const payload = (await response.json()) as ApiErrorPayload;
       message = payload.error || payload.message || message;
     } catch {
-      // no-op: usamos el mensaje por defecto
+      // usamos mensaje por defecto
     }
 
     throw new ApiError(message, response.status);
   }
 
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
   return (await response.json()) as T;
+}
+
+async function request<T>(endpoint: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(endpoint, {
+    headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
+    cache: "no-store",
+    ...init,
+  });
+
+  return handleResponse<T>(response);
+}
+
+function toBackendPayload(data: ContactoFormData) {
+  return {
+    nombre: buildNombreCompleto(data.nombre, data.apellido),
+    telefono: data.telefono.trim(),
+    email: data.email.trim().toLowerCase(),
+  };
 }
 
 export async function getContactos(search?: string): Promise<Contacto[]> {
@@ -36,11 +59,34 @@ export async function getContactos(search?: string): Promise<Contacto[]> {
   const queryString = params.toString();
   const endpoint = queryString ? `/api/contactos?${queryString}` : "/api/contactos";
 
-  const response = await fetch(endpoint, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-    cache: "no-store",
-  });
+  return request<Contacto[]>(endpoint, { method: "GET" });
+}
 
-  return handleResponse<Contacto[]>(response);
+export async function getContactoById(id: string): Promise<Contacto> {
+  return request<Contacto>(`/api/contactos/${id}`, { method: "GET" });
+}
+
+export async function createContacto(data: ContactoFormData): Promise<Contacto> {
+  return request<Contacto>("/api/contactos", {
+    method: "POST",
+    body: JSON.stringify(toBackendPayload(data)),
+  });
+}
+
+export async function updateContacto(id: string, data: ContactoFormData): Promise<Contacto> {
+  return request<Contacto>(`/api/contactos/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(toBackendPayload(data)),
+  });
+}
+
+export async function deleteContacto(id: string): Promise<{ message: string }> {
+  return request<{ message: string }>(`/api/contactos/${id}`, {
+    method: "DELETE",
+  });
+}
+
+export async function getContactoFormById(id: string): Promise<ContactoFormData> {
+  const contacto = await getContactoById(id);
+  return contactoToFormData(contacto);
 }

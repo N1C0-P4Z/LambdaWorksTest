@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -22,6 +23,7 @@ type ContactTableProps = {
   contactos: Contacto[];
   loading: boolean;
   error: string | null;
+  onEdit: (id: number) => void;
 };
 
 function TableSkeleton() {
@@ -35,7 +37,7 @@ function TableSkeleton() {
   );
 }
 
-export function ContactTable({ contactos, loading, error }: ContactTableProps) {
+export function ContactTable({ contactos, loading, error, onEdit }: ContactTableProps) {
   if (loading) {
     return (
       <div className="rounded-2xl border border-[#E0E0E0] bg-white">
@@ -68,6 +70,7 @@ export function ContactTable({ contactos, loading, error }: ContactTableProps) {
             <TableHead className="px-4 py-3 text-sm font-semibold text-[#333333]">Contacto</TableHead>
             <TableHead className="px-4 py-3 text-sm font-semibold text-[#333333]">Teléfono</TableHead>
             <TableHead className="px-4 py-3 text-sm font-semibold text-[#333333]">Email</TableHead>
+            <TableHead className="px-4 py-3 text-right text-sm font-semibold text-[#333333]">Acciones</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -75,7 +78,8 @@ export function ContactTable({ contactos, loading, error }: ContactTableProps) {
           {contactos.map((contacto, index) => (
             <TableRow
               key={contacto.id}
-              className="border-[#E0E0E0] odd:bg-white even:bg-[#F9F9F9] hover:bg-[#F5F5F5]"
+              onClick={() => onEdit(contacto.id)}
+              className="cursor-pointer border-[#E0E0E0] odd:bg-white even:bg-[#F9F9F9] hover:bg-[#F5F5F5]"
             >
               <TableCell className="px-4 py-4 align-top">
                 <div className="flex min-w-[260px] items-start gap-3">
@@ -105,6 +109,19 @@ export function ContactTable({ contactos, loading, error }: ContactTableProps) {
                   <Mail className="size-4 text-[#00A9A9]" />
                   {contacto.email}
                 </span>
+              </TableCell>
+
+              <TableCell className="px-4 py-4 text-right">
+                <Button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onEdit(contacto.id);
+                  }}
+                  className="h-9 bg-[#1E90FF] px-3 text-white hover:bg-[#1E90FF]/90"
+                >
+                  Editar
+                </Button>
               </TableCell>
             </TableRow>
           ))}

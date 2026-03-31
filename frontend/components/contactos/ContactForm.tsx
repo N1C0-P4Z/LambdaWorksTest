@@ -1,0 +1,205 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { Mail, Phone, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import type { ContactoFormData } from "@/lib/types";
+
+type FormErrors = Partial<Record<keyof ContactoFormData, string>>;
+
+type ContactFormProps = {
+  initialData?: ContactoFormData;
+  isEditing: boolean;
+  onSubmit: (data: ContactoFormData) => Promise<void>;
+  isLoading: boolean;
+  onCancel: () => void;
+  formId?: string;
+};
+
+const PHONE_REGEX = /^\+?[0-9\s()-]{7,20}$/;
+
+function validateField(field: keyof ContactoFormData, value: string): string {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return "Este campo es requerido";
+  }
+
+  if ((field === "nombre" || field === "apellido") && trimmed.length < 2) {
+    return "Debe tener al menos 2 caracteres";
+  }
+
+  if (field === "telefono" && !PHONE_REGEX.test(trimmed)) {
+    return "Formato inválido. Ej: +34 600 000 000";
+  }
+
+  if (
+    field === "email" &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(trimmed)
+  ) {
+    return "Email inválido";
+  }
+
+  return "";
+}
+
+function validateForm(data: ContactoFormData): FormErrors {
+  return {
+    nombre: validateField("nombre", data.nombre),
+    apellido: validateField("apellido", data.apellido),
+    telefono: validateField("telefono", data.telefono),
+    email: validateField("email", data.email),
+  };
+}
+
+export function ContactForm({
+  initialData,
+  isEditing,
+  onSubmit,
+  isLoading,
+  onCancel,
+  formId = "contact-form",
+}: ContactFormProps) {
+  const [formData, setFormData] = useState<ContactoFormData>(
+    initialData || {
+      nombre: "",
+      apellido: "",
+      telefono: "",
+      email: "",
+    }
+  );
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const hasErrors = useMemo(
+    () => Object.values(errors).some((value) => Boolean(value)),
+    [errors]
+  );
+
+  function updateField(field: keyof ContactoFormData, value: string) {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const validation = validateForm(formData);
+    setErrors(validation);
+
+    if (Object.values(validation).some(Boolean)) {
+      return;
+    }
+
+    await onSubmit({
+      nombre: formData.nombre.trim(),
+      apellido: formData.apellido.trim(),
+      telefono: formData.telefono.trim(),
+      email: formData.email.trim(),
+    });
+  }
+
+  return (
+    <form id={formId} onSubmit={handleSubmit} className="space-y-6">
+      <section className="rounded-2xl border border-[#E0E0E0] bg-white p-6 shadow-sm">
+        <div className="mb-5 flex items-center gap-2 text-[#333333]">
+          <Phone className="size-5 text-[#0066CC]" />
+          <h2 className="text-2xl font-semibold">Información Personal</h2>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="nombre" className="mb-1 block text-sm font-medium text-[#333333]">
+              Nombre
+            </label>
+            <div className="relative">
+              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <Input
+                id="nombre"
+                value={formData.nombre}
+                onChange={(e) => updateField("nombre", e.target.value)}
+                disabled={isLoading}
+                placeholder="Juan"
+                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+              />
+            </div>
+            {errors.nombre ? <p className="mt-1 text-xs text-[#FF3333]">{errors.nombre}</p> : null}
+          </div>
+
+          <div>
+            <label htmlFor="apellido" className="mb-1 block text-sm font-medium text-[#333333]">
+              Apellido
+            </label>
+            <div className="relative">
+              <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <Input
+                id="apellido"
+                value={formData.apellido}
+                onChange={(e) => updateField("apellido", e.target.value)}
+                disabled={isLoading}
+                placeholder="Pérez"
+                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+              />
+            </div>
+            {errors.apellido ? <p className="mt-1 text-xs text-[#FF3333]">{errors.apellido}</p> : null}
+          </div>
+
+          <div>
+            <label htmlFor="telefono" className="mb-1 block text-sm font-medium text-[#333333]">
+              Teléfono
+            </label>
+            <div className="relative">
+              <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <Input
+                id="telefono"
+                value={formData.telefono}
+                onChange={(e) => updateField("telefono", e.target.value)}
+                disabled={isLoading}
+                placeholder="+34 600 000 000"
+                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+              />
+            </div>
+            {errors.telefono ? <p className="mt-1 text-xs text-[#FF3333]">{errors.telefono}</p> : null}
+          </div>
+
+          <div>
+            <label htmlFor="email" className="mb-1 block text-sm font-medium text-[#333333]">
+              Email
+            </label>
+            <div className="relative">
+              <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#333333]/55" />
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => updateField("email", e.target.value)}
+                disabled={isLoading}
+                placeholder="juan@email.com"
+                className="h-11 border-[#E0E0E0] bg-[#F5F5F5] pl-9 text-[#333333]"
+              />
+            </div>
+            {errors.email ? <p className="mt-1 text-xs text-[#FF3333]">{errors.email}</p> : null}
+          </div>
+        </div>
+      </section>
+
+      <div className="grid gap-3 md:hidden">
+        <Button
+          type="button"
+          onClick={onCancel}
+          disabled={isLoading}
+          className="h-11 w-full bg-[#1E90FF] text-white hover:bg-[#1E90FF]/90"
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          disabled={isLoading || hasErrors}
+          className="h-11 w-full border border-[#0066CC] bg-white text-[#0066CC] hover:bg-[#F5F5F5]"
+        >
+          {isLoading ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
+        </Button>
+      </div>
+    </form>
+  );
+}
