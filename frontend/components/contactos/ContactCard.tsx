@@ -5,9 +5,7 @@ import type { Contacto } from "@/lib/types";
 import {
   getAvatarColor,
   getInitials,
-  normalizeEmpresa,
   normalizePhone,
-  normalizePuesto,
 } from "@/lib/contact-helpers";
 
 type ContactCardProps = {
@@ -28,8 +26,7 @@ export function ContactCard({ contacto, index }: ContactCardProps) {
 
           <div className="min-w-0 flex-1 space-y-1">
             <h3 className="truncate text-xl font-semibold text-[#333333]">{contacto.nombre}</h3>
-            <p className="text-base text-[#333333]/90">{normalizePuesto(contacto.puesto)}</p>
-            <p className="text-sm text-[#333333]/70">{normalizeEmpresa(contacto.empresa)}</p>
+
 
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               <p className="flex items-center gap-2 text-sm text-[#333333]">

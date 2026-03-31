@@ -18,13 +18,7 @@ export function normalizePhone(telefono?: string | null) {
   return telefono?.trim() || "Sin teléfono";
 }
 
-export function normalizePuesto(puesto?: string | null) {
-  return puesto?.trim() || "Sin puesto";
-}
 
-export function normalizeEmpresa(empresa?: string | null) {
-  return empresa?.trim() || "Sin empresa";
-}
 
 export function matchContacto(contacto: Contacto, query: string) {
   const normalizedQuery = query.trim().toLowerCase();
@@ -34,8 +28,6 @@ export function matchContacto(contacto: Contacto, query: string) {
     contacto.nombre,
     contacto.email,
     contacto.telefono ?? "",
-    contacto.empresa ?? "",
-    contacto.puesto ?? "",
   ]
     .join(" ")
     .toLowerCase();

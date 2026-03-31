@@ -16,12 +16,6 @@ const actions: ActionCard[] = [
     background: "#0066CC",
   },
   {
-    title: "🔍 Buscar Contactos",
-    description: "Encuentra contactos rápidamente",
-    href: "/busqueda",
-    background: "#00A9A9",
-  },
-  {
     title: "➕ Crear Nuevo",
     description: "Agregar un nuevo contacto",
     href: "/contactos/nuevo",
@@ -31,7 +25,7 @@ const actions: ActionCard[] = [
 
 export function DashboardPanel() {
   return (
-    <section className="grid gap-4 md:grid-cols-3">
+    <section className="grid gap-4 md:grid-cols-2">
       {actions.map((action) => (
         <Link key={action.title} href={action.href} className="block">
           <Card

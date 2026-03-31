@@ -15,6 +15,8 @@ type ContactFormProps = {
   isLoading: boolean;
   onCancel: () => void;
   formId?: string;
+  /** Muestra botones Cancelar/Guardar dentro del propio form (para usar dentro de un Dialog) */
+  showActions?: boolean;
 };
 
 const PHONE_REGEX = /^\+?[0-9\s()-]{7,20}$/;
@@ -60,6 +62,7 @@ export function ContactForm({
   isLoading,
   onCancel,
   formId = "contact-form",
+  showActions = false,
 }: ContactFormProps) {
   const [formData, setFormData] = useState<ContactoFormData>(
     initialData || {
@@ -101,11 +104,13 @@ export function ContactForm({
 
   return (
     <form id={formId} onSubmit={handleSubmit} className="space-y-6">
-      <section className="rounded-2xl border border-[#E0E0E0] bg-white p-6 shadow-sm">
-        <div className="mb-5 flex items-center gap-2 text-[#333333]">
-          <Phone className="size-5 text-[#0066CC]" />
-          <h2 className="text-2xl font-semibold">Información Personal</h2>
-        </div>
+      <section className={showActions ? "" : "rounded-2xl border border-[#E0E0E0] bg-white p-6 shadow-sm"}>
+        {!showActions && (
+          <div className="mb-5 flex items-center gap-2 text-[#333333]">
+            <Phone className="size-5 text-[#0066CC]" />
+            <h2 className="text-2xl font-semibold">Información Personal</h2>
+          </div>
+        )}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -183,6 +188,7 @@ export function ContactForm({
         </div>
       </section>
 
+      {/* Botones en mobile (sin dialog) */}
       <div className="grid gap-3 md:hidden">
         <Button
           type="button"
@@ -200,6 +206,27 @@ export function ContactForm({
           {isLoading ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
         </Button>
       </div>
+
+      {/* Botones inline para uso dentro de Dialog */}
+      {showActions && (
+        <div className="flex justify-end gap-3 pt-2">
+          <Button
+            type="button"
+            onClick={onCancel}
+            disabled={isLoading}
+            className="h-10 bg-[#F5F5F5] text-[#333333] hover:bg-[#EDEDED]"
+          >
+            Cancelar
+          </Button>
+          <Button
+            type="submit"
+            disabled={isLoading || hasErrors}
+            className="h-10 bg-[#0066CC] text-white hover:bg-[#0066CC]/90"
+          >
+            {isLoading ? "Guardando..." : isEditing ? "Guardar cambios" : "Crear contacto"}
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

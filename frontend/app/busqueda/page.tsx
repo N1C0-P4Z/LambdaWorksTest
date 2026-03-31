@@ -9,7 +9,7 @@ import { useContactos } from "@/hooks/useContactos";
 import { useSearch } from "@/hooks/useSearch";
 
 export default function BusquedaPage() {
-  const { search, setSearch, debouncedSearch, normalizedSearch } = useSearch("maria", 400);
+  const { search, setSearch, debouncedSearch, normalizedSearch } = useSearch("", 400);
   const { contactos, loading, error } = useContactos({ search: debouncedSearch });
 
   useEffect(() => {
@@ -25,12 +25,12 @@ export default function BusquedaPage() {
           <h1 className="text-center text-3xl font-bold">Búsqueda de Contactos</h1>
           <h2 className="text-2xl font-semibold">Búsqueda Avanzada</h2>
           <p className="text-base text-white/90">
-            Encuentra contactos por nombre, email, empresa o puesto
+            Encuentra contactos por nombre, email o teléfono
           </p>
           <SearchBar
             value={search}
             onChange={setSearch}
-            placeholder="maria"
+            placeholder="Buscar contactos..."
             className="max-w-3xl"
           />
         </div>

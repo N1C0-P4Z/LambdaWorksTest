@@ -3,9 +3,6 @@ export type Contacto = {
   nombre: string;
   email: string;
   telefono?: string | null;
-  puesto?: string | null;
-  empresa?: string | null;
-  categoria?: string | null;
   createdAt?: string;
   updatedAt?: string;
 };
