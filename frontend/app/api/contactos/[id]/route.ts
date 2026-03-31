@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 
 const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000/api";
 
+function getBackendHeaders() {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  return headers;
+}
+
 async function getIdFromContext(context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
   return id;
@@ -13,9 +21,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
   try {
     const response = await fetch(`${BACKEND_API_URL}/contactos/${id}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getBackendHeaders(),
       cache: "no-store",
     });
 
@@ -37,9 +43,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
 
     const response = await fetch(`${BACKEND_API_URL}/contactos/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getBackendHeaders(),
       body: JSON.stringify(body),
       cache: "no-store",
     });
@@ -60,9 +64,7 @@ export async function DELETE(_request: Request, context: { params: Promise<{ id:
   try {
     const response = await fetch(`${BACKEND_API_URL}/contactos/${id}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getBackendHeaders(),
       cache: "no-store",
     });
 

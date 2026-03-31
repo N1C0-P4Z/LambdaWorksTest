@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 
 const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000/api";
 
+function getBackendHeaders() {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  return headers;
+}
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const search = url.searchParams.get("search")?.trim();
@@ -14,9 +22,7 @@ export async function GET(request: Request) {
   try {
     const response = await fetch(backendUrl, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getBackendHeaders(),
       cache: "no-store",
     });
 
@@ -36,9 +42,7 @@ export async function POST(request: Request) {
 
     const response = await fetch(`${BACKEND_API_URL}/contactos`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getBackendHeaders(),
       body: JSON.stringify(body),
       cache: "no-store",
     });
