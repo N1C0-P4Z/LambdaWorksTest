@@ -20,6 +20,7 @@ export async function GET(request: Request) {
   }
 
   try {
+    console.log("Fetching BACKEND URL:", backendUrl.toString());
     const response = await fetch(backendUrl, {
       method: "GET",
       headers: getBackendHeaders(),
