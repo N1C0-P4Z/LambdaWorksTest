@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -64,11 +65,11 @@ export function ContactDialog({
           <DialogTitle className="text-xl font-bold text-white">
             {mode === "create" ? "Nuevo Contacto" : "Editar Contacto"}
           </DialogTitle>
-          <p className="text-sm text-white/80">
+          <DialogDescription className="text-sm text-white/80">
             {mode === "create"
               ? "Completá los datos del nuevo contacto"
               : "Modificá la información del contacto"}
-          </p>
+          </DialogDescription>
         </DialogHeader>
 
         <div className="px-6 py-5">
