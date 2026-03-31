@@ -20,6 +20,7 @@ Desde la raiz del repositorio:
 docker compose up -d
 docker compose ps
 ```
+De no funcionar, intentar sudo docker en los apartados anteriores
 
 El contenedor de la base se levanta como `test-postgres` en el puerto `5432`.
 
