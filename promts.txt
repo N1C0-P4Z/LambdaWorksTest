@@ -1,0 +1,162 @@
+# Promts Usados para este Test
+
+## Promts a Opus 4.6 y Sonnet 4.6 
+
+User: Complete Context of My Situation:
+- I'm a high school student
+- I've never used: Node.js, React, PostgreSQL, Docker, Prisma, REST APIs
+- I need to build a Full Stack technical test (assignment)
+- The test requires: A contact management app (create, read, update, delete contacts)
+- Tech Stack: React + Node.js + PostgreSQL + Prisma + Docker
+- Deadline: 24 hours
+- Operating System: linux fedora
+- IDE: VSCode (where we are now)
+- Experience Level: Absolute beginner with zero backend experience
+
+MY SPECIFIC QUESTIONS:
+
+1. **INSTALLATIONS NEEDED** (point by point)
+   - What do I need to download first?
+   - In what order should I install them?
+   - Should I use the latest versions or specific versions?
+   - Give me direct download links
+
+2. **POST-INSTALLATION VERIFICATION**
+   - After installing each tool, what command do I run to verify it works?
+   - What should I see on screen if it's installed correctly?
+   - What should I do if I see an error?
+   - Include exact commands I can copy-paste
+
+3. **FOLDER STRUCTURE**
+   - Show me an ASCII diagram of the folder structure I need to create
+   - Which files go where
+   - In which folder do I run each command
+
+4. **FIRST 15 EXACT COMMANDS**
+   - Copy-paste ready
+   - Which terminal to use (Git Bash, CMD, PowerShell, Terminal)
+   - What does each command do
+   - In which folder to execute each command
+   - What output should I see after each command
+
+5. **VERIFY EVERYTHING WORKS**
+   - How to test that the backend is working
+   - How to test that the frontend is working
+   - How to test that the database connection works
+   - How to access the running app in my browser
+
+6. **COMMON ERRORS & SOLUTIONS**
+   - What can go wrong at each step
+   - How to fix each error
+   - What NOT to do
+   - Troubleshooting commands
+
+7. **QUICK START GUIDE**
+   - After everything is installed, what's the FASTEST way to start developing
+   - Which commands to run every time I want to work on the project
+   - How to stop everything when I'm done
+
+VERY IMPORTANT REQUIREMENTS FOR YOUR RESPONSE:
+
+📋 **FORMAT:**
+- Number every single step (1, 2, 3, etc.)
+- Use emojis for clarity and visual separation
+- ZERO technical jargon without explanation
+- Every code command in a code block (```bash ```)
+- All commands are copy-paste ready
+
+Quiero que generes un archivo AGENTS.md para mi repositorio. El objetivo del archivo es dar instrucciones claras a un agente de IA (y a humanos) sobre cómo trabajar en este proyecto sin romperlo.
+
+CONTEXTO DEL PROYECTO:
+
+Sistema operativo principal: Fedora Linux
+Tipo de proyecto: Technical test / app CRUD de contactos (backend primero)
+Backend: Node.js + Express
+Base de datos: PostgreSQL
+ORM: Prisma
+DB local: Docker Compose (archivo docker-compose.yml existe en la raíz)
+Frontend: React (se hará después, por ahora NO tocar)
+Editor: VSCode
+DOCKER COMPOSE:
+
+Existe un archivo docker-compose.yml en la raíz del proyecto
+Levanta un contenedor PostgreSQL 16-alpine llamado "test-postgres"
+Usuario: test, Contraseña: test, Base de datos: test
+Puerto: 5432
+NO debe ser modificado sin permiso explícito
+REQUISITOS DEL BACKEND:
+
+Endpoints CRUD:
+POST /api/contactos
+GET /api/contactos
+GET /api/contactos/:id
+PUT /api/contactos/:id
+DELETE /api/contactos/:id
+Campos del modelo Contacto: id, nombre, email (único), telefono (opcional), createdAt, updatedAt
+Variables de entorno: DATABASE_URL="postgresql://test:test@localhost:5432/test"
+Prisma se usa con migrations (prisma migrate dev). Evitar comandos peligrosos en producción.
+INSTRUCCIONES PARA EL CONTENIDO DE AGENTS.md:
+Incluí secciones claras y concretas:
+
+Purpose / Alcance del repo (qué se está construyendo y qué NO)
+
+Quickstart (comandos copy-paste):
+
+levantar DB con docker compose
+instalar deps del backend
+correr backend en dev
+Environment variables:
+
+ejemplo de .env.example (NO incluir secretos reales)
+dónde va el .env
+Prisma workflow:
+
+migrate dev, generate, studio
+cómo agregar un campo nuevo al modelo correctamente
+Project structure:
+
+árbol de carpetas esperado (backend/, prisma/, src/, etc.)
+Rules for AI agents (muy importante):
+
+No modificar docker-compose.yml sin permiso
+No commitear .env
+Mantener endpoints y rutas estables
+Preferir cambios pequeños y verificables
+Antes de cambiar algo, explicar por qué
+Siempre incluir pasos de verificación (curl, logs, etc.)
+Common troubleshooting:
+
+port 5432 in use
+docker daemon not running
+prisma can't connect
+how to see logs
+FORMATO:
+
+El resultado debe ser SOLO el contenido del archivo AGENTS.md en Markdown.
+Usar listas y bloques de código.
+Comandos en bloques bash y archivos de ejemplo en bloques.
+Lenguaje: español claro, orientado a principiante.
+Secciones numeradas o con títulos H2 (##) para claridad.
+Generá el archivo completo ahora.
+
+
+## Promts a Github Copilot
+
+necesito que me armes un promt para pasarle a opus 4.6. Mi idea ahora es corroborar que todo el codigo cumple con la consigna, como usar para el frontend next.js, para el backend node.js, para la base de datos prisma con postgreSQL. Luego que me haga un esquema de como esta realizado el codigo(acordate que es mi primera vez usando estas tecnologias y tengo que mostralo, por ende tengo que aprender). Y por ultimo, como el frontend esta muy basico, si puedo usar componentes de shadcn/ui, si tengo que ejecutar algun comando y en donde modificaria esto puntualmente. 
+
+estoy buscando componentes en shadcn, para mi proyecto, cuales serian los mejores componentes para esto? dame los nombres en ingles y la explicacion en espanol 
+
+EJECUTE EL PASO 2 Y SALTO ESTO: npx prisma migrate dev --name add_apellido_unique_constraints
+Loaded Prisma config from prisma.config.ts.
+
+Prisma config detected, skipping environment variable loading.
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "test", schema "public" at "localhost:5432"
+
+Error:
+⚠️ We found changes that cannot be executed:
+
+• Step 0 Added the required column apellido to the Contacto table without a default value. There are 6 rows in this table, it is not possible to execute this step.
+
+You can use prisma migrate dev --create-only to create the migration file, and manually modify it to address the underlying issue(s).
+Then run prisma migrate dev to apply it and verify it works.
