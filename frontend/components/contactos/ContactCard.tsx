@@ -1,0 +1,49 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Mail, Phone } from "lucide-react";
+import type { Contacto } from "@/lib/types";
+import {
+  getAvatarColor,
+  getInitials,
+  normalizeEmpresa,
+  normalizePhone,
+  normalizePuesto,
+} from "@/lib/contact-helpers";
+
+type ContactCardProps = {
+  contacto: Contacto;
+  index: number;
+};
+
+export function ContactCard({ contacto, index }: ContactCardProps) {
+  return (
+    <Card className="rounded-2xl border border-[#E0E0E0] bg-white py-0 shadow-sm">
+      <CardContent className="p-5">
+        <div className="flex items-start gap-4">
+          <Avatar className="size-14" style={{ backgroundColor: getAvatarColor(index) }}>
+            <AvatarFallback className="bg-transparent text-lg font-semibold text-white">
+              {getInitials(contacto.nombre)}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="min-w-0 flex-1 space-y-1">
+            <h3 className="truncate text-xl font-semibold text-[#333333]">{contacto.nombre}</h3>
+            <p className="text-base text-[#333333]/90">{normalizePuesto(contacto.puesto)}</p>
+            <p className="text-sm text-[#333333]/70">{normalizeEmpresa(contacto.empresa)}</p>
+
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <p className="flex items-center gap-2 text-sm text-[#333333]">
+                <Phone className="size-4 text-[#0066CC]" />
+                {normalizePhone(contacto.telefono)}
+              </p>
+              <p className="flex items-center gap-2 break-all text-sm text-[#333333]">
+                <Mail className="size-4 text-[#00A9A9]" />
+                {contacto.email}
+              </p>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
